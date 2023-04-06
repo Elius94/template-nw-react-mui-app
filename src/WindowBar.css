@@ -1,0 +1,13 @@
+.windowBar {
+    position: static !important;
+    top: 0 !important;
+    -webkit-app-region: drag;
+    min-height: 40px !important;
+    height: 40px !important;
+    margin: 0;
+    display: flex;
+}
+
+.windowBarButtons {
+    -webkit-app-region: no-drag;
+}
