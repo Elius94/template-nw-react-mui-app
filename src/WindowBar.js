@@ -13,7 +13,7 @@ import { Box, Tooltip } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectApplicationName, setGuiPage } from './redux/reducers/utils';
 import { disconnectTcp, selectInstance } from './redux/reducers/connect';
-const GUI = require('nw.gui');
+const GUI = window.require('nw.gui');
 
 export default function WindowBar() {
     const applicationName = useSelector(selectApplicationName)

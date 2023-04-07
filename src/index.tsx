@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById("root") as HTMLElement;
 
 const root = ReactDOMClient.createRoot(rootElement ? rootElement : document.createElement("div"));
 
