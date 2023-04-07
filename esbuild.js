@@ -17,6 +17,13 @@ const dev = process.argv.includes("--dev") || process.env.NODE_ENV === "developm
 // rm -rf build && mkdir build && cp -r public/* build
 execSync("npx rimraf build && mkdir build")
 fs.cpSync("public", "build", { recursive: true })
+// cp package.json build/package.json
+fs.copyFileSync("package.json", "build/package.json")
+
+// rm -rf package && mkdir package
+execSync("npx rimraf package && mkdir package")
+// mkdir package/win && mkdir package/linux && mkdir package/osx-intel
+execSync("mkdir package/win && mkdir package/linux && mkdir package/osx-intel")
 
 const banner = "/* eslint-disable linebreak-style */\n" +
     "/*\n" +
@@ -53,7 +60,7 @@ const buildOptions = {
         {
             name: "TypeScriptDeclarationsPlugin",
             setup(build) {
-                build.onEnd((result) => {
+                build.onEnd(async (result) => {
                     if (result.errors.length > 0) {
                         console.log("\u001b[31mESM Build failed!\u001b[37m")
                         process.exit(1)
@@ -61,47 +68,68 @@ const buildOptions = {
                     execSync("npx tsc --emitDeclarationOnly")
                     console.log("\u001b[36mTypeScript declarations generated!\u001b[37m")
                     // copy src/index.html to public/index.html
-                    nwbuild({
-                        mode: "get",
-                        version: "0.72.0",
+                    await nwbuild({
+                        mode: "build",
+                        version: "latest",
                         flavor: "normal",
                         platform: "win",
                         arch: "x64",
                         cacheDir: "./cache",
-                        outDir: "./build",
-                        srcDir: "./src",
+                        outDir: "./package/win",
+                        srcDir: "./build",
                         cache: true,
                         ffmpeg: false,
                         glob: false,
-                        app: {
+                        /*app: {
                             name: pkg.name,
-                            icon: "./nwapp/icon.png",
+                            icon: "./src/icon192.png",
                             company: pkg.author,
                             fileDescription: pkg.description,
                             productName: pkg.name,
                             legalCopyright: pkg.author,
-                        },
+                        },*/
                     });
-                    nwbuild({
-                        mode: "get",
-                        version: "0.72.0",
+                    await nwbuild({
+                        mode: "build",
+                        version: "latest",
                         flavor: "normal",
                         platform: "linux",
                         arch: "x64",
                         cacheDir: "./cache",
-                        outDir: "./build",
-                        srcDir: "./src",
+                        outDir: "./package/linux",
+                        srcDir: "./build",
                         cache: true,
                         ffmpeg: false,
                         glob: false,
-                        app: {
+                        /*app: {
                             name: pkg.name,
-                            icon: "./nwapp/icon.png",
+                            icon: "./src/icon192.png",
                             company: pkg.author,
                             fileDescription: pkg.description,
                             productName: pkg.name,
                             legalCopyright: pkg.author,
-                        },
+                        },*/
+                    });
+                    await nwbuild({
+                        mode: "build",
+                        version: "latest",
+                        flavor: "normal",
+                        platform: "osx",
+                        arch: "x64",
+                        cacheDir: "./cache",
+                        outDir: "./package/osx-intel",
+                        srcDir: "./build",
+                        cache: true,
+                        ffmpeg: false,
+                        glob: false,
+                        /*app: {
+                            name: pkg.name,
+                            icon: "./src/icon192.png",
+                            company: pkg.author,
+                            fileDescription: pkg.description,
+                            productName: pkg.name,
+                            legalCopyright: pkg.author,
+                        },*/
                     });
                 })
             }
