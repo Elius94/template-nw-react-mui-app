@@ -23,7 +23,7 @@ fs.copyFileSync("package.json", "build/package.json")
 // rm -rf package && mkdir package
 execSync("npx rimraf package && mkdir package")
 // mkdir package/win && mkdir package/linux && mkdir package/osx-intel
-execSync("mkdir package/win && mkdir package/linux && mkdir package/osx-intel")
+execSync("cd package && mkdir win && mkdir linux && mkdir osx-intel")
 
 const banner = "/* eslint-disable linebreak-style */\n" +
     "/*\n" +
